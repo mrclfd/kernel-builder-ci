@@ -225,12 +225,12 @@ build_kernel() {
 	
 	if [ $COMPILER == proton-clang ]
 	then
-	  make -j"$PROCS" O=out \
-		              CC=clang \
-		              CROSS_COMPILE=aarch64-linux-gnu- \ 
-		              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-		${CROSS_COMPILE}ld -v
-		
+	  clang --help
+	  make -j"$PROCS" O=out \ 
+	                CC=clang \
+	                CROSS_COMPILE=aarch64-linux-gnu- \ 
+	                CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+		              
 	elif [ $COMPILER == clang ]
 	then
 	  make -j"$PROCS" O=out \
