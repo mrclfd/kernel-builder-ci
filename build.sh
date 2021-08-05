@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=proton-clang
+COMPILER=clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -195,13 +195,13 @@ up_log() {
 }
 
 build_kernel() {
-	if [ $INCREMENTAL = 0 ]
+	if [ $INCREMENTAL == 0 ]
 	then
 		msg "// Cleaning Sources //"
 		make clean && make mrproper && rm -rf out
 	fi
 
-	if [ "$PTTG" = 1 ]
+	if [ $PTTG == 1 ]
  	then
 		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KERNEL_TYPE</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
 	fi
@@ -218,20 +218,12 @@ build_kernel() {
 
 	BUILD_START=$(date +"%s")
 	
-	if [ $SILENCE = "1" ]
+	if [ $SILENCE == 1 ]
 	then
 		MAKE+=( -s )
 	fi
 	
-	if [ $COMPILER == proton-clang ]
-	then
-	  clang --help
-	  make -j"$PROCS" O=out \ 
-	                CC=clang \
-	                CROSS_COMPILE=aarch64-linux-gnu- \ 
-	                CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-		              
-	elif [ $COMPILER == clang ]
+	if [ $COMPILER == clang ]
 	then
 	  make -j"$PROCS" O=out \
 	                CC=clang \
