@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=nusantara-clang
+COMPILER=gcc-4.9
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
