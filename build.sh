@@ -41,7 +41,7 @@ STABLE=N
   fi
 USE_EAS=N
 
-COMPILER=proton-clang
+COMPILER=clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -234,12 +234,19 @@ build_kernel() {
 		              OBJCOPY=llvm-objcopy \ 
 		              OBJDUMP=llvm-objdump \ 
 		              STRIP=llvm-strip
+		              
 	elif [ $COMPILER == clang ]
 	then
 	  make -j"$PROCS" O=out \
 	                CC=clang CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
-	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
+	                CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+	                AR=llvm-ar \ 
+		              NM=llvm-nm \ 
+		              OBJCOPY=llvm-objcopy \ 
+		              OBJDUMP=llvm-objdump \ 
+		              STRIP=llvm-strip
+		              
 	elif [ $COMPILER == nusantara-clang ]
 	then
 	  make -j"$PROCS" O=out \
