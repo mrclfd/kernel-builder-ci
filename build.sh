@@ -86,6 +86,10 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER == gcc-4.9 ]
 	then
 		msg "// Cloning GCC 4.9 //"
+		
+	elif [ $COMPILER == clang ]
+	  msg "// Cloning AOSP Clang //"
+	  git clone https://github.com/dimas-ady/toolchain -b clang $CLANG_DIR && git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR && git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
 	
 	elif [ $COMPILER == proton-clang ]
 	then
@@ -94,6 +98,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	  
   elif [ $COMPILER == nusantara-clang ]
   then
+    msg "// Cloning Nusantara Devs Clang //"
     git clone --single-branch --depth=1 https://gitlab.com/najahi/clang.git $CLANG_DIR
   fi
 
@@ -112,6 +117,11 @@ exports() {
   then
     KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 	  PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+	elif [ $COMPILER == clang ]
+	then
+	  KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
+	  PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:${PATH}"
+	fi
 	elif [ $COMPILER == proton-clang ]
 	then
   	KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
@@ -206,6 +216,12 @@ build_kernel() {
 		              CC=clang \
 		              CROSS_COMPILE=aarch64-linux-android- \
 		              CROSS_COMPILE_ARM32=arm-linux-androideabi-
+	elif [ $COMPILER == clang ]
+	  make -j"$PROCS" O=out \
+	                CC=clang CLANG_TRIPLE=aarch64-linux-gnu- \
+	                CROSS_COMPILE=aarch64-linux-android- \
+	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
+	then
 	elif [ $COMPILER == nusantara-clang ]
 	then
 	  make -j"$PROCS" O=out \
