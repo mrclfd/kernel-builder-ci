@@ -89,6 +89,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		msg "// Cloning GCC 4.9 //"
 		
 	elif [ $COMPILER == clang ]
+	then
 	  msg "// Cloning AOSP Clang //"
 	  git clone https://github.com/dimas-ady/toolchain -b clang $CLANG_DIR && git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR && git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
 	
