@@ -63,7 +63,6 @@ PTTG=1
 	fi
 
 DEF_REG=0
-SILENCE=1
 LOG_DEBUG=0
 
 DISTRO=$(cat /etc/issue)
@@ -217,11 +216,6 @@ build_kernel() {
 	fi
 
 	BUILD_START=$(date +"%s")
-	
-	if [ $SILENCE == 1 ]
-	then
-		MAKE+=( -s )
-	fi
 	
 	if [ $COMPILER == clang ]
 	then
