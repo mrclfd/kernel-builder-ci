@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=gcc-4.9
+COMPILER=proton-clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -132,8 +132,6 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	msg "// Cloning Anykernel3 //" 
 	git clone https://github.com/dimas-ady/AnyKernel3.git
 }
-
-##------------------------------------------------------##
 
 exports() {
 	export KBUILD_BUILD_USER="DimasAdy-XZXZ"
@@ -234,7 +232,8 @@ build_kernel() {
 	elif [ $COMPILER == clang ]
 	then
 	  make -j"$PROCS" O=out \
-	                CC=clang CLANG_TRIPLE=aarch64-linux-gnu- \
+	                CC=clang \
+	                CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
 	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
 	                
