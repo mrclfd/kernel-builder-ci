@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=clang
+COMPILER=nusantara-clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -165,8 +165,6 @@ exports() {
 	export PROCS
 }
 
-##---------------------------------------------------------##
-
 tg_post_msg() {
 	curl -s -X POST "$BOT_MSG_URL" -d chat_id=$CHATID \
 	-d "disable_web_page_preview=true" \
@@ -197,8 +195,6 @@ up_log() {
   log=$(cat build.log)
   tg_post_msg "<b>Log :</b>%0A<code>$log</code>"
 }
-
-##----------------------------------------------------------##
 
 build_kernel() {
 	if [ $INCREMENTAL = 0 ]
@@ -273,7 +269,7 @@ build_kernel() {
 		else
 			if [ $PTTG == 1 ]
  			then
-				tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>" "$CHATID"
+				tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>"
 				up_log
 			fi
 		fi
