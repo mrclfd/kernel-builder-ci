@@ -32,7 +32,7 @@ MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
-COMPILER=proton-clang
+COMPILER=nusantara-clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -86,7 +86,6 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER == gcc-4.9 ]
 	then
 		msg "// Cloning GCC 4.9 //"
-		
 	
 	elif [ $COMPILER == proton-clang ]
 	then
