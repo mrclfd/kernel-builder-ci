@@ -41,7 +41,7 @@ STABLE=N
   fi
 USE_EAS=N
 
-COMPILER=clang
+COMPILER=proton-clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
