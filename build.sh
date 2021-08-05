@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=nusantara-clang
+COMPILER=proton-clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -225,10 +225,12 @@ build_kernel() {
 	
 	if [ $COMPILER == proton-clang ]
 	then
-		make -j"$PROCS" O=out \
+	  make -j"$PROCS" O=out \
 		              CC=clang \
 		              CROSS_COMPILE=aarch64-linux-gnu- \ 
 		              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+		${CROSS_COMPILE}ld -v
+		
 	elif [ $COMPILER == clang ]
 	then
 	  make -j"$PROCS" O=out \
