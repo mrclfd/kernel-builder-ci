@@ -2,7 +2,7 @@
 clone: 
   depth: 1
 kind: pipeline
-name: XD Kernel
+name: Brutal Kernel Compilation
 steps: 
   - 
     commands: 
@@ -13,7 +13,7 @@ steps:
       GITHUB_TOKEN:
         from_secret: GH_TOKEN
     image: fadlyas/kernel_dockerfile:latest
-    name: Brutal Kernel
+    name: Compilation
     trigger: 
       branch: 
         - unified-tes
