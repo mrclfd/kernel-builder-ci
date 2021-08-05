@@ -37,7 +37,6 @@ STABLE=N
   then
     BUILD_TYPE=Stable
   else
-  then
     BUILD_TYPE=Test
   fi
 USE_EAS=N
