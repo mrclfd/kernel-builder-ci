@@ -32,6 +32,16 @@ MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
+STABLE=N
+  if [ $STABLE == Y ]
+  then
+    BUILD_TYPE=Stable
+  elif
+  then
+    BUILD_TYPE=Test
+  fi
+USE_EAS=N
+
 COMPILER=clang
 
 # Compiler Directory
@@ -42,7 +52,7 @@ CLANG_DIR=$KERNEL_DIR/clang
 INCREMENTAL=0
 
 PTTG=1
-	if [ $PTTG = 1 ]
+	if [ $PTTG == 1 ]
 	then
 		CHATID="-1001328821526"
 	fi
@@ -63,13 +73,19 @@ if [ -n "$CI" ]
 then
 	if [ -n "$CIRCLECI" ] 
 	then
+	if [ $STABLE != Y ]
+	then
 		export KBUILD_BUILD_VERSION=$CIRCLE_BUILD_NUM
+	fi
 		export KBUILD_BUILD_HOST="Dimas-Ady"
 		export CI_BRANCH=$CIRCLE_BRANCH
 	fi
 	if [ -n "$DRONE" ]
 	then
+	  if [ $STABLE != Y ]
+	  then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
+		fi
 		export KBUILD_BUILD_HOST=DroneCI
 		export CI_BRANCH=$DRONE_BRANCH
 	else
@@ -86,12 +102,16 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	# Cloning The Compiler and Toolchain
 	if [ $COMPILER == gcc-4.9 ]
 	then
-		msg "// Cloning GCC 4.9 //"
+		msg "// Cloning AOSP GCC 4.9 //"
+		git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR
+		git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
 		
 	elif [ $COMPILER == clang ]
 	then
 	  msg "// Cloning AOSP Clang //"
-	  git clone https://github.com/dimas-ady/toolchain -b clang $CLANG_DIR && git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR && git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
+	  git clone https://github.com/dimas-ady/toolchain -b clang $CLANG_DIR
+	  git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR 
+	  git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
 	
 	elif [ $COMPILER == proton-clang ]
 	then
@@ -112,8 +132,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
 exports() {
 	export KBUILD_BUILD_USER="DimasAdy-XZXZ"
-	export ARCH=arm64
-	export SUBARCH=arm64
+	export ARCH=arm64 && export SUBARCH=arm64
    
   if [ $COMPILER == gcc-4.9 ]
   then
@@ -148,17 +167,11 @@ tg_post_msg() {
 	-d "disable_web_page_preview=true" \
 	-d "parse_mode=html" \
 	-d text="$1"
-
 }
 
-##----------------------------------------------------------------##
-
 tg_post_build() {
-	#Post MD5Checksum alongwith for easeness
-	msg "Checking MD5sum..."
 	MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
 
-	#Show the Checksum alongwith caption
 	curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
 	-F chat_id="$CHATID"  \
 	-F "disable_web_page_preview=true" \
@@ -191,7 +204,7 @@ build_kernel() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_msg "<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
+		tg_post_msg "<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Buikd Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
 	fi
 
 	make O=out $DEFCONFIG
@@ -232,9 +245,9 @@ build_kernel() {
 		              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 	elif [ $COMPILER == gcc-4.9 ]
   then
-	  msg "// Started Compilation //"
-  	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-androideabi-
-  	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-android-
+  	make -j"$PROCS" O=out \
+  	              CROSS_COMPILE=aarch64-linux-android- \
+  	              CROSS_COMPILE_ARM32=arm-linux-androideabi-
   fi
 
 		BUILD_END=$(date +"%s")
@@ -243,7 +256,7 @@ build_kernel() {
 		if [ -f "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb ] 
 	    then
 	    	msg "// Kernel successfully compiled //"
-	    	if [ $BUILD_DTBO = 1 ]
+	    	if [ $BUILD_DTBO == 1 ]
 			then
 				msg "// Building DTBO //"
 				tg_post_msg "<code>Building DTBO..</code>"
@@ -252,7 +265,7 @@ build_kernel() {
 			fi
 				gen_zip
 		else
-			if [ "$PTTG" = 1 ]
+			if [ $PTTG == 1 ]
  			then
 				tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>" "$CHATID"
 				up_log
