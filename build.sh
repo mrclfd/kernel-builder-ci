@@ -32,7 +32,7 @@ MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
-COMPILER=nusantara-clang
+COMPILER=clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
