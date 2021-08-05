@@ -40,6 +40,12 @@ STABLE=N
     BUILD_TYPE=Test
   fi
 USE_EAS=N
+  if [ $USE_EAS == Y ]
+  then
+    KERNEL_TYPE=EAS
+  else
+    KERNEL_TYPE=HMP
+  fi
 
 COMPILER=clang
 
@@ -203,7 +209,7 @@ build_kernel() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
+		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KERNEL_TYPE</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
 	fi
 
 	make O=out $DEFCONFIG
@@ -277,19 +283,19 @@ build_kernel() {
 gen_zip() {
 	msg "// Zipping into a flashable zip //"
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
-	if [ $BUILD_DTBO = 1 ]
+	if [ $BUILD_DTBO == 1 ]
 	then
 		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
 	cd AnyKernel3 || exit
-	zip -r9 "$ZIPNAME-$DEVICE-$DATE" * -x .git README.md
+	
+	ZIP_FINAL="$ZIPNAME-$KERNEL_TYPE-$DEVICE-$DATE"
+	zip -r9 "$ZIP_FINAL" * -x .git README.md
 
-	## Prepare a final zip variable
-	ZIP_FINAL="$ZIPNAME-$DEVICE-$DATE.zip"
 	if [ "$PTTG" = 1 ]
  	then
  	  msg "Sending to Telegram..."
-		tg_post_build "$ZIP_FINAL" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+		tg_post_build "$ZIP_FINAL.zip" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
 		if [ $LOG_DEBUG == 1 ]
 		then
 		  up_log
