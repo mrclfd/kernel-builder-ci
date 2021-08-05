@@ -218,11 +218,11 @@ build_kernel() {
 		              CROSS_COMPILE=aarch64-linux-android- \
 		              CROSS_COMPILE_ARM32=arm-linux-androideabi-
 	elif [ $COMPILER == clang ]
+	then
 	  make -j"$PROCS" O=out \
 	                CC=clang CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
 	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
-	then
 	elif [ $COMPILER == nusantara-clang ]
 	then
 	  make -j"$PROCS" O=out \
@@ -230,9 +230,7 @@ build_kernel() {
 		              CLANG_TRIPLE=aarch64-linux-gnu- \
 		              CROSS_COMPILE=aarch64-linux-gnu- \
 		              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-	fi
-  
-  if [ $COMPILER == gcc-4.9 ]
+	elif [ $COMPILER == gcc-4.9 ]
   then
 	  msg "// Started Compilation //"
   	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-androideabi-
