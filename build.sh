@@ -49,7 +49,7 @@ PTTG=1
 
 DEF_REG=0
 SILENCE=0
-LOG_DEBUG=1
+LOG_DEBUG=0
 
 DISTRO=$(cat /etc/issue)
 KBUILD_BUILD_HOST=DroneCI
@@ -191,7 +191,7 @@ build_kernel() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_msg "<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><code>$ProgLink</code>"
+		tg_post_msg "<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
 	fi
 
 	make O=out $DEFCONFIG
@@ -255,8 +255,6 @@ build_kernel() {
 			if [ "$PTTG" = 1 ]
  			then
 				tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>" "$CHATID"
-				#make > build.log 2>&1
-				#tg_post_file "build.log" "build.log"
 				up_log
 			fi
 		fi
