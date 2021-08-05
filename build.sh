@@ -234,13 +234,8 @@ build_kernel() {
 	  make -j"$PROCS" O=out \
 	                CC=clang CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
-	                CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-	                AR=llvm-ar \ 
-		              NM=llvm-nm \ 
-		              OBJCOPY=llvm-objcopy \ 
-		              OBJDUMP=llvm-objdump \ 
-		              STRIP=llvm-strip
-		              
+	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
+	                
 	elif [ $COMPILER == nusantara-clang ]
 	then
 	  make -j"$PROCS" O=out \
