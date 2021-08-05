@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=clang
+COMPILER=proton-clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -230,7 +230,13 @@ build_kernel() {
 	                CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
 	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
-	                
+	elif [ $COMPILER == proton-clang ]
+	then
+	make -j"$PROCS" O=out \
+	                CC=clang \
+	                CROSS_COMPILE=aarch64-linux-gnu- \
+	                CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+	
 	elif [ $COMPILER == nusantara-clang ]
 	then
 	  make -j"$PROCS" O=out \
