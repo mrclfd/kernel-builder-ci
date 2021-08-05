@@ -47,7 +47,7 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 
-COMPILER=proton-clang
+COMPILER=clang
 
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -63,7 +63,7 @@ PTTG=1
 	fi
 
 DEF_REG=0
-SILENCE=0
+SILENCE=1
 LOG_DEBUG=0
 
 DISTRO=$(cat /etc/issue)
