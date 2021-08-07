@@ -32,9 +32,9 @@ MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
-BRUTAL_KERNEL=y
-OC=n
-  if [ $OC == Y]
+BRUTAL_KERNEL=Y
+OC=N
+  if [ $OC == Y ]
   then
     CLOCK="Overclock"
   else
@@ -207,10 +207,10 @@ build_kernel() {
 
 	if [ $PTTG == 1 ]
  	then
-		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KERNEL_TYPE</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
+		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KERNEL_TYPE $CLOCK</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
 	fi
   
-  if [ $BRUTAL_KERNEL == y ]
+  if [ $BRUTAL_KERNEL == Y ]
   then
     LOCAL_NAME_0=$(sed -n -e '/CONFIG_LOCALVERSION/ s/.*\= *//p' arch/arm64/configs/brutal_defconfig)
     LOCAL_NAME_1=$(echo "$LOCAL_NAME_0" | tr -d '"')
@@ -294,9 +294,9 @@ gen_zip() {
 	fi
 	cd AnyKernel3 || exit
 	
-	if [ $BRUTAL_KERNEL == y ]
+	if [ $BRUTAL_KERNEL == Y ]
 	then
-	  if [ $STABLE != y ]
+	  if [ $STABLE != Y ]
 	  then
       ZIP_FINAL="$KERNEL_NAME-$KERNEL_TYPE-$CLOCK-$DEVICE-$DATE"
     else
