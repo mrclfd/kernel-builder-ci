@@ -36,9 +36,9 @@ BRUTAL_KERNEL=y
 OC=n
   if [ $OC == Y]
   then
-    ClockString="-Overclock"
+    CLOCK="Overclock"
   else
-    ClockString="-Stock"
+    CLOCK="Stock"
   fi
 STABLE=N
   if [ $STABLE == Y ]
@@ -214,11 +214,13 @@ build_kernel() {
   then
     LOCAL_NAME_0=$(sed -n -e '/CONFIG_LOCALVERSION/ s/.*\= *//p' arch/arm64/configs/brutal_defconfig)
     LOCAL_NAME_1=$(echo "$LOCAL_NAME_0" | tr -d '"')
-    LOCAL_NAME_2="$LOCAL_NAME_1-$KERNEL_TYPE$ClockString"
+    LOCAL_NAME_2="$LOCAL_NAME_1-$KERNEL_TYPE-$CLOCK"
     sed -i '/CONFIG_LOCALVERSION/d' arch/arm64/configs/brutal_defconfig
     echo "CONFIG_LOCALVERSION="\"${LOCAL_NAME_2}\" >> arch/arm64/configs/brutal_defconfig
     
     tg_post_file "arch/arm64/configs/brutal_defconfig" "defconfig file"
+    KERNEL_NAME=${LOCAL_NAME_1:1}
+    export KERNEL_NAME
     make O=out brutal_defconfig
   else
 	  make O=out $DEFCONFIG
@@ -296,9 +298,9 @@ gen_zip() {
 	then
 	  if [ $STABLE != y ]
 	  then
-      ZIP_FINAL="BrutalKernel-$KERNEL_TYPE-$DEVICE-$DATE$ClockString"
+      ZIP_FINAL="$KERNEL_NAME-$KERNEL_TYPE-$CLOCK-$DEVICE-$DATE"
     else
-      ZIP_FINAL="BrutalKernel-$KERNEL_TYPE-$DEVICE$ClockString"
+      ZIP_FINAL="$KERNEL_MAME-$KERNEL_TYPE-$CLOCK-$DEVICE"
     fi
 	else
 	  ZIP_FINAL="$ZIPNAME-$KERNEL_TYPE-$DEVICE-$DATE"
