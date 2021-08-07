@@ -32,6 +32,14 @@ MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
+BRUTAL_KERNEL=y
+OC=n
+  if [ $OC == Y]
+  then
+    ClockString="-Overclock"
+  else
+    ClockString="-Stock"
+  fi
 STABLE=N
   if [ $STABLE == Y ]
   then
@@ -55,14 +63,11 @@ GCC32_DIR=$KERNEL_DIR/gcc32
 CLANG_DIR=$KERNEL_DIR/clang
 
 INCREMENTAL=0
-
 PTTG=1
 	if [ $PTTG == 1 ]
 	then
 		CHATID="-1001328821526"
 	fi
-
-DEF_REG=0
 LOG_DEBUG=0
 
 DISTRO=$(cat /etc/issue)
@@ -133,7 +138,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 }
 
 exports() {
-	export KBUILD_BUILD_USER="DimasAdy-XZXZ"
+	export KBUILD_BUILD_USER="DimsXZ"
 	export ARCH=arm64 && export SUBARCH=arm64
    
   if [ $COMPILER == gcc-4.9 ]
@@ -204,15 +209,17 @@ build_kernel() {
  	then
 		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KERNEL_TYPE</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$ProgLink'>Click Here</a>"
 	fi
-
-	make O=out $DEFCONFIG
-	if [ $DEF_REG = 1 ]
-	then
-		cp .config arch/arm64/configs/$DEFCONFIG
-		git add arch/arm64/configs/$DEFCONFIG
-		git commit -m "$DEFCONFIG: Regenerate
-
-						This is an auto-generated commit"
+  
+  if [ $BRUTAL_KERNEL == y ]
+  then
+    LOCAL_NAME_0=$(sed -n -e '/CONFIG_LOCALVERSION/ s/.*\= *//p' arch/arm64/configs/brutal_defconfig)
+    LOCAL_NAME_1="$LOCAL_NAME_0-$KERNEL_TYPE$ClockString"
+    sed -i '1s/.*/CONFIG_LOCALVERSION="$LOCAL_NAME_1"/' arch/arm64/configs/brutal_defconfig
+    tg_post_msg "$LOCAL_NAME_1"
+    tg_post_file "arch/arm64/configs/brutal_defconfig" "defconfig file"
+    make O=out brutal_defconfig
+  else
+	  make O=out $DEFCONFIG
 	fi
 
 	BUILD_START=$(date +"%s")
@@ -283,7 +290,17 @@ gen_zip() {
 	fi
 	cd AnyKernel3 || exit
 	
-	ZIP_FINAL="$ZIPNAME-$KERNEL_TYPE-$DEVICE-$DATE"
+	if [ $BRUTAL_KERNEL == y ]
+	then
+	  if [ $STABLE != y ]
+	  then
+      ZIP_FINAL="BrutalKernel-$KERNEL_TYPE-$DEVICE-$DATE$ClockString"
+    else
+      ZIP_FINAL="BrutalKernel-$KERNEL_TYPE-$DEVICE$ClockString"
+    fi
+	else
+	  ZIP_FINAL="$ZIPNAME-$KERNEL_TYPE-$DEVICE-$DATE"
+	fi
 	zip -r9 "$ZIP_FINAL" * -x .git README.md
 
 	if [ "$PTTG" = 1 ]
