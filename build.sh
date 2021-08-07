@@ -213,9 +213,11 @@ build_kernel() {
   if [ $BRUTAL_KERNEL == y ]
   then
     LOCAL_NAME_0=$(sed -n -e '/CONFIG_LOCALVERSION/ s/.*\= *//p' arch/arm64/configs/brutal_defconfig)
-    LOCAL_NAME_1="$LOCAL_NAME_0-$KERNEL_TYPE$ClockString"
-    sed -i '1s/.*/CONFIG_LOCALVERSION="$LOCAL_NAME_1"/' arch/arm64/configs/brutal_defconfig
-    tg_post_msg "$LOCAL_NAME_1"
+    LOCAL_NAME_1=$(echo "$LOCAL_NAME_0" | tr -d '"')
+    LOCAL_NAME_2="$LOCAL_NAME_1-Stock"
+    sed -i '/CONFIG_LOCALVERSION/d' arch/arm64/configs/brutal_defconfig
+    echo "CONFIG_LOCALVERSION="\"${LOCAL_NAME_2}\" >> arch/arm64/configs/brutal_defconfig
+    
     tg_post_file "arch/arm64/configs/brutal_defconfig" "defconfig file"
     make O=out brutal_defconfig
   else
