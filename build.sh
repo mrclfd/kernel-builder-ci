@@ -67,6 +67,7 @@ PTTG=1
 	if [ $PTTG == 1 ]
 	then
 		CHATID="-1001328821526"
+		PRIVATE_CHATID="661131869"
 	fi
 LOG_DEBUG=0
 
@@ -178,7 +179,7 @@ tg_post_build() {
 	MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
 
 	curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
-	-F chat_id="$CHATID"  \
+	-F chat_id="$3"  \
 	-F "disable_web_page_preview=true" \
 	-F "parse_mode=html" \
 	-F caption="$2 | <b>MD5 Checksum : </b><code>$MD5CHECK</code>"  
@@ -218,7 +219,6 @@ build_kernel() {
     sed -i '/CONFIG_LOCALVERSION/d' arch/arm64/configs/brutal_defconfig
     echo "CONFIG_LOCALVERSION="\"${LOCAL_NAME_2}\" >> arch/arm64/configs/brutal_defconfig
     
-    tg_post_file "arch/arm64/configs/brutal_defconfig" "defconfig file"
     KERNEL_NAME=${LOCAL_NAME_1:1}
     export KERNEL_NAME
     make O=out brutal_defconfig
@@ -310,7 +310,13 @@ gen_zip() {
 	if [ "$PTTG" = 1 ]
  	then
  	  msg "Sending to Telegram..."
-		tg_post_build "$ZIP_FINAL.zip" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+ 	  if [ $STABLE != Y ]
+ 	  then
+		  tg_post_build "$ZIP_FINAL.zip" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)" $CHATID
+		else
+      tg_post_build "$ZIP_FINAL.zip" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)" $PRIVATE_CHATID		
+    fi
+		
 		if [ $LOG_DEBUG == 1 ]
 		then
 		  up_log
