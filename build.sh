@@ -214,7 +214,7 @@ build_kernel() {
   then
     LOCAL_NAME_0=$(sed -n -e '/CONFIG_LOCALVERSION/ s/.*\= *//p' arch/arm64/configs/brutal_defconfig)
     LOCAL_NAME_1=$(echo "$LOCAL_NAME_0" | tr -d '"')
-    LOCAL_NAME_2="$LOCAL_NAME_1-Stock"
+    LOCAL_NAME_2="$LOCAL_NAME_1-$KERNEL_TYPE$ClockString"
     sed -i '/CONFIG_LOCALVERSION/d' arch/arm64/configs/brutal_defconfig
     echo "CONFIG_LOCALVERSION="\"${LOCAL_NAME_2}\" >> arch/arm64/configs/brutal_defconfig
     
