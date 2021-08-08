@@ -33,7 +33,7 @@ DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
 BRUTAL_KERNEL=Y
-OC=Y
+OC=N
   if [ $OC == Y ]
   then
     CLOCK="Overclock"
@@ -54,7 +54,7 @@ USE_EAS=N
   else
     KERNEL_TYPE=HMP
   fi
-NLV=Y
+NLV=N
   if [ $NLV == Y ]
   then
     VB_TYPE=NLV
