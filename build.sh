@@ -33,7 +33,7 @@ DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
 BRUTAL_KERNEL=Y
-OC=N
+OC=Y
   if [ $OC == Y ]
   then
     CLOCK="Overclock"
@@ -54,7 +54,7 @@ USE_EAS=N
   else
     KERNEL_TYPE=HMP
   fi
-NLV=N
+NLV=Y
   if [ $NLV == Y ]
   then
     VB_TYPE=NLV
@@ -222,14 +222,14 @@ build_kernel() {
   if [ $BRUTAL_KERNEL == Y ]
   then
   
-    if [ $LV == Y ]
+    if [ $NLV == Y ]
     then
-    
+      git cherry-pick 75a909ca1376505ff3355d089f096a283d874da0
     fi
     
     if [ $OC == Y ]
     then
-    
+      git cherry-pick 65702d6878e04d560eace2e88713ffe438ba929e
     fi
     
     if 
