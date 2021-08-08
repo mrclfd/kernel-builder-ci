@@ -33,7 +33,7 @@ DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
 BRUTAL_KERNEL=Y
-OC=N
+OC=Y
   if [ $OC == Y ]
   then
     CLOCK="Overclock"
