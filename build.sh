@@ -54,12 +54,12 @@ USE_EAS=N
   else
     KERNEL_TYPE=HMP
   fi
-LV=Y
-  if [ $LV == Y]
+NLV=N
+  if [ $NLV == Y ]
   then
-    VB_TYPE=LV
-  else
     VB_TYPE=NLV
+  else
+    VB_TYPE=LV
   fi
   
 
