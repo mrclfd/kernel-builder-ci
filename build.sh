@@ -232,7 +232,6 @@ build_kernel() {
       git cherry-pick 65702d6878e04d560eace2e88713ffe438ba929e
     fi
     
-    if 
     LOCAL_NAME_0=$(sed -n -e '/CONFIG_LOCALVERSION/ s/.*\= *//p' arch/arm64/configs/brutal_defconfig)
     LOCAL_NAME_1=$(echo "$LOCAL_NAME_0" | tr -d '"')
     LOCAL_NAME_2="$LOCAL_NAME_1-$KERNEL_TYPE-$CLOCK-$VB_TYPE"
