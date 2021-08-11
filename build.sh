@@ -33,7 +33,7 @@ DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
 
 BRUTAL_KERNEL=Y
-OC=Y
+OC=N
   if [ $OC == Y ]
   then
     CLOCK="Overclock"
@@ -94,8 +94,10 @@ then
 	if [ $STABLE != Y ]
 	then
 		export KBUILD_BUILD_VERSION=$CIRCLE_BUILD_NUM
+		export KBUILD_BUILD_HOST=CircleCI
+	else
+	  export KBUILD_BUILD_HOST=XZXZ
 	fi
-		export KBUILD_BUILD_HOST="Dimas-Ady"
 		export CI_BRANCH=$CIRCLE_BRANCH
 	fi
 	if [ -n "$DRONE" ]
@@ -103,8 +105,10 @@ then
 	  if [ $STABLE != Y ]
 	  then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
-		fi
 		export KBUILD_BUILD_HOST=DroneCI
+		else
+		  export KBUILD_BUILD_HOST=XZXZ
+		fi
 		export CI_BRANCH=$DRONE_BRANCH
 	else
 		echo "Not presetting Build Version"
@@ -147,7 +151,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 }
 
 exports() {
-	export KBUILD_BUILD_USER="DimsXZ"
+	export KBUILD_BUILD_USER="DimsAdy"
 	export ARCH=arm64 && export SUBARCH=arm64
    
   if [ $COMPILER == gcc-4.9 ]
