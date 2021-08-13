@@ -7,7 +7,7 @@ jobs:
       - run:
           no_output_timeout: 30m 
           command: |
-            source run.sh
+            ls ~/project
 workflows:
   version: 2.1
   cooking:
