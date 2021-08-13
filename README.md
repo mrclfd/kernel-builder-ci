@@ -2,9 +2,6 @@
 
 ### CI Supported : DroneCI & CircleCI
 
-*Don't look at my commit :)*
-
-
 ## How to Use
 #### DroneCI
 1. Create your DroneCi Account
@@ -17,3 +14,8 @@
 
 #### CircleCI
 Same as DroneCI tutorial, just a little bit different like BOT_API_KEY must changed to TELEGRAM_TOKEN
+
+
+## Note
+- *Don't look at my commit:)*
+- *Which CI should I used? Drone maybe can't verify your account. But if your account is verified, i prefer to use DroneCI because it more faster*
