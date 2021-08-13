@@ -9,11 +9,12 @@ jobs:
           command: |
             git clone https://github.com/dimas-ady/kernel-builder-droneci
             ls
-            ls ~
+            ls ~/project
             cd kernel-builder-droneci
-            bash run.sh
+            bash run2.sh
           environment:
             TELEGRAM_TOKEN: TG_TOKEN
+            TT: TEST
 workflows:
   version: 2.1
   cooking:
