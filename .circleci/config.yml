@@ -7,11 +7,7 @@ jobs:
       - run:
           no_output_timeout: 30m 
           command: |
-            git clone https://github.com/dimas-ady/kernel-builder-droneci
-            ls
-            ls ~/project
-            cd kernel-builder-droneci
-            bash run2.sh
+            source run.sh
 workflows:
   version: 2.1
   cooking:
