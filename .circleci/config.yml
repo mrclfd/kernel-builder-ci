@@ -13,8 +13,8 @@ jobs:
             cd kernel-builder-droneci
             bash run2.sh
           environment:
-            TELEGRAM_TOKEN: TG_TOKEN
-            TT: TEST
+            TELEGRAM_TOKEN: $TG_TOKEN
+            TT: $TEST
 workflows:
   version: 2.1
   cooking:
