@@ -5,11 +5,15 @@ jobs:
       - image: fadlyas/kernel_dockerfile:latest
    steps:
       - run:
-          no_output_timeout: 50m 
+          no_output_timeout: 30m 
           command: |
             git clone https://github.com/dimas-ady/kernel-builder-droneci
+            ls
+            ls ~
             cd kernel-builder-droneci
             bash run.sh
+          environment:
+            TELEGRAM_TOKEN: TG_TOKEN
 workflows:
   version: 2.1
   cooking:
