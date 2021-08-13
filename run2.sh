@@ -1,1 +1,1 @@
-echo $TT
+echo $TEST
