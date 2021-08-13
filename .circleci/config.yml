@@ -8,9 +8,6 @@ jobs:
           no_output_timeout: 30m 
           command: |
             git clone https://github.com/dimas-ady/kernel-builder-droneci
-            ls
-            ls ~/
-            echo "Nganu"
             cd kernel-builder-droneci
             bash run.sh
 workflows:
