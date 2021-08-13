@@ -6,7 +6,7 @@ name: Brutal Kernel Compilation
 steps: 
   - 
     commands: 
-      - "bash ./run.shh"
+      - "bash ./run.sh"
     environment: 
       TELEGRAM_TOKEN: 
         from_secret: BOT_API_KEY
