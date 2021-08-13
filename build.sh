@@ -31,7 +31,9 @@ ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
+COMPILER=proton-clang
 
+# Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
 OC=N
   if [ $OC == Y ]
@@ -62,15 +64,11 @@ NLV=N
     VB_TYPE=LV
   fi
   
-
-COMPILER=proton-clang
-
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
 GCC32_DIR=$KERNEL_DIR/gcc32
 CLANG_DIR=$KERNEL_DIR/clang
 
-INCREMENTAL=0
 PTTG=1
 	if [ $PTTG == 1 ]
 	then
@@ -123,19 +121,18 @@ COMMIT_HEAD=$(git log --oneline -1)
 DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
  clone() {
-	# Cloning The Compiler and Toolchain
 	if [ $COMPILER == gcc-4.9 ]
 	then
 		msg "// Cloning AOSP GCC 4.9 //"
-		git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR
-		git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
+		git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR
+		git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
 		
 	elif [ $COMPILER == clang ]
 	then
 	  msg "// Cloning AOSP Clang //"
-	  git clone https://github.com/dimas-ady/toolchain -b clang $CLANG_DIR
-	  git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR 
-	  git clone https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
+	  git clone --depth=1 https://github.com/dimas-ady/toolchain -b clang $CLANG_DIR
+	  git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR 
+	  git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
 	
 	elif [ $COMPILER == proton-clang ]
 	then
@@ -214,11 +211,8 @@ up_log() {
 }
 
 build_kernel() {
-	if [ $INCREMENTAL == 0 ]
-	then
-		msg "// Cleaning Sources //"
-		make clean && make mrproper && rm -rf out
-	fi
+	msg "// Cleaning Sources //"
+	make clean && make mrproper
 
 	if [ $PTTG == 1 ]
  	then
@@ -281,6 +275,8 @@ build_kernel() {
 		              CLANG_TRIPLE=aarch64-linux-gnu- \
 		              CROSS_COMPILE=aarch64-linux-gnu- \
 		              CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
+		              
+		              
 	elif [ $COMPILER == gcc-4.9 ]
   then
   	make -j"$PROCS" O=out \
