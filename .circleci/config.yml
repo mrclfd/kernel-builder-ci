@@ -2,12 +2,11 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: ubuntu:20.04
+      - image: fadlyas/kernel_dockerfile:latest
    steps:
       - run:
           no_output_timeout: 50m 
           command: |
-            apt-get -y update && apt-get -y upgrade && apt-get -y install tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git 
             ls
 workflows:
   version: 2.1
