@@ -7,10 +7,7 @@ jobs:
       - run:
           no_output_timeout: 50m 
           command: |
-            check=$(ls /usr/lib/x86_64-linux-gnu | grep libisl.so -m1)
-            if [ ! -z "$check" ]; then if [ "$check" != "libisl.so.15" ]; then cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libisl.so.15; fi; fi
-            check=$(ls /usr/lib/x86_64-linux-gnu | grep libz3.so -m1)
-            if [ ! -z "$check" ]; then if [ "$check" != "libz3.so.4.8" ]; then cp -af /usr/lib/x86_64-linux-gnu/$check /usr/lib/x86_64-linux-gnu/libz3.so.4.8; fi; fi
+            apt-get -y update && apt-get -y upgrade && apt-get -y install tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git 
             ls
 workflows:
   version: 2.1
