@@ -1,2 +1,2 @@
-# kernel-builder-droneci
-This is my kernel builder
+# Kernel Builder
+I am lazy to make description
