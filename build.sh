@@ -31,7 +31,7 @@ ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
-COMPILER=proton-clang
+COMPILER=dragon-tc
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
@@ -143,6 +143,12 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
   then
     msg "// Cloning Nusantara Devs Clang //"
     git clone --single-branch --depth=1 https://gitlab.com/najahi/clang.git $CLANG_DIR
+  elif [ $GCC64_DIR == dragon-tc ]
+  then
+    msg "// Cloning Dragon TC //"
+    git clone --depth=1 https://github.com/NusantaraDevs/DragonTC $CLANG_DIR
+    git clone --depth=1 https://github.com/RyuujiX/aarch64-linux-gnu -b stable-gcc $GCC64_DIR
+    git clone --depth=1 https://github.com/RyuujiX/arm-linux-gnueabi -b stable-gcc $GCC32_DIR
   fi
 
 	msg "// Cloning Anykernel3 //" 
@@ -170,6 +176,10 @@ exports() {
     KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
     LD_LIBRARY_PATH="$CLANG_DIR/bin/../lib:$PATH"
     PATH="$CLANG_DIR/bin:${PATH}"
+  elif [ $COMPILER == dragon-tc ]
+  then
+    KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
+    PATH=$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:/usr/bin:${PATH}
 	fi
 
 	export PATH KBUILD_COMPILER_STRING
@@ -276,7 +286,18 @@ build_kernel() {
 		              CROSS_COMPILE=aarch64-linux-gnu- \
 		              CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
 		              
-		              
+	elif [ $COMPILER == dragon-tc ]
+	then
+	  make -j"$PROCS" O=out \
+	                CC=clang \
+	                CROSS_COMPILE=aarch64-linux-gnu- \
+	                CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+	                AR=llvm-ar \
+	                NM=llvm-nm \
+	                OBJCOPY=llvm-objcopy \
+	                OBJDUMP=llvm-objdump \
+	                STRIP=llvm-strip
+	                
 	elif [ $COMPILER == gcc-4.9 ]
   then
   	make -j"$PROCS" O=out \
