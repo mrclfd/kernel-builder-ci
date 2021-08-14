@@ -305,26 +305,19 @@ build_kernel() {
   	              CROSS_COMPILE_ARM32=arm-linux-androideabi-
   fi
 
-		BUILD_END=$(date +"%s")
-		DIFF=$((BUILD_END - BUILD_START))
+	BUILD_END=$(date +"%s")
+	DIFF=$((BUILD_END - BUILD_START))
 
 		if [ -f "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb ] 
-	    then
-	    	msg "// Kernel successfully compiled //"
-	    	if [ $BUILD_DTBO == 1 ]
-			then
-				msg "// Building DTBO //"
-				tg_post_msg "<code>Building DTBO..</code>"
-				python2 "$KERNEL_DIR/scripts/ufdt/libufdt/utils/src/mkdtboimg.py" \
-					create "$KERNEL_DIR/out/arch/arm64/boot/dtbo.img" --page_size=4096 "$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm6150-idp-overlay.dtbo"
-			fi
-				gen_zip
+	 then
+	   msg "// Kernel successfully compiled //"
+	   gen_zip
 		else
-			if [ $PTTG == 1 ]
- 			then
-				tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>"
+	  	if [ $PTTG == 1 ]
+ 		  then
+		  	tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>"
 				up_log
-			fi
+	  	fi
 		fi
 	
 }
@@ -351,7 +344,7 @@ gen_zip() {
 	fi
 	zip -r9 "$ZIP_FINAL" * -x .git README.md
 
-	if [ "$PTTG" = 1 ]
+	if [ $PTTG == 1 ]
  	then
  	  msg "Sending to Telegram..."
  	  if [ $STABLE != Y ]
@@ -366,6 +359,8 @@ gen_zip() {
 		  up_log
 		fi
 		msg "Kernel succesfully sended to Telegram Channel"
+	else
+	  curl -T $ZIP_FINAL.zip https://oshi.at
 	fi
 	cd ..
 }
