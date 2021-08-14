@@ -147,8 +147,13 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
   then
     msg "// Cloning Dragon TC //"
     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC $CLANG_DIR
-    git clone --depth=1 https://github.com/RyuujiX/aarch64-linux-gnu -b stable-gcc $GCC64_DIR
-    git clone --depth=1 https://github.com/RyuujiX/arm-linux-gnueabi -b stable-gcc $GCC32_DIR
+    git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR 
+	  git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
+  elif [ $COMPILER == gcc-10 ]
+  then
+    msg "// Cloning GCC 10.2.0 //"
+    git clone https://github.com/theradcolor/aarch64-linux-gnu -b stable-gcc --depth=1 $GCC64_DIR
+    git clone https://github.com/theradcolor/arm-linux-gnueabi -b stable-gcc --depth=1 $GCC32_DIR
   fi
 
 	msg "// Cloning Anykernel3 //" 
@@ -180,6 +185,10 @@ exports() {
   then
     KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
     PATH=$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:/usr/bin:${PATH}
+	elif [ $COMPILER == gcc-10 ]
+	then
+	  KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
+	  PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
 	export PATH KBUILD_COMPILER_STRING
@@ -298,6 +307,12 @@ build_kernel() {
 	                OBJDUMP=llvm-objdump \
 	                STRIP=llvm-strip
 	                
+	elif [ $COMPILER == gcc-10 ]
+	then
+	  make -j"$PROCS" O=out \
+  	              CROSS_COMPILE=aarch64-linux-gnu- \
+  	              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+  	              
 	elif [ $COMPILER == gcc-4.9 ]
   then
   	make -j"$PROCS" O=out \
