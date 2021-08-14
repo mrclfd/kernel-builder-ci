@@ -143,7 +143,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
   then
     msg "// Cloning Nusantara Devs Clang //"
     git clone --single-branch --depth=1 https://gitlab.com/najahi/clang.git $CLANG_DIR
-  elif [ $GCC64_DIR == dragon-tc ]
+  elif [ $COMPILER == dragon-tc ]
   then
     msg "// Cloning Dragon TC //"
     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC $CLANG_DIR
