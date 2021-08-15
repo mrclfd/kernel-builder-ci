@@ -30,11 +30,11 @@ KERNEL_DIR="$(pwd)"
 ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
-DEFCONFIG=brutal_defconfig
+DEFCONFIG=X00TD_defconfig
 COMPILER=gcc-10
 
 # Brutal Kernel Only !!!
-BRUTAL_KERNEL=Y
+BRUTAL_KERNEL=N
 OC=N
   if [ $OC == Y ]
   then
@@ -275,6 +275,7 @@ build_kernel() {
 	                CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
 	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
+	
 	elif [ $COMPILER == proton-clang ]
 	then
 	make -j"$PROCS" O=out \
