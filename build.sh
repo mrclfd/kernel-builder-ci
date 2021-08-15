@@ -147,8 +147,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
   then
     msg "// Cloning Dragon TC //"
     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC $CLANG_DIR
-    git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-aarch64 $GCC64_DIR 
-	  git clone --depth=1 https://github.com/dimas-ady/toolchain -b gcc-4.9-arm $GCC32_DIR
+    git clone https://github.com/theradcolor/aarch64-linux-gnu -b stable-gcc --depth=1 $GCC64_DIR
+    git clone https://github.com/theradcolor/arm-linux-gnueabi -b stable-gcc --depth=1 $GCC32_DIR
   elif [ $COMPILER == gcc-10 ]
   then
     msg "// Cloning GCC 10.2.0 //"
