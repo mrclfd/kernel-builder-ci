@@ -31,7 +31,7 @@ ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
-COMPILER=gcc-10
+COMPILER=nusantara-clang
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
