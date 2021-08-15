@@ -31,10 +31,10 @@ ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
-COMPILER=clang
+COMPILER=gcc-10
 
 # Brutal Kernel Only !!!
-BRUTAL_KERNEL=N
+BRUTAL_KERNEL=Y
 OC=N
   if [ $OC == Y ]
   then
