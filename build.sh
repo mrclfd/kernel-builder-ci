@@ -294,8 +294,14 @@ build_kernel() {
 		              CC=clang \
 		              CLANG_TRIPLE=aarch64-linux-gnu- \
 		              CROSS_COMPILE=aarch64-linux-gnu- \
-		              CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
+		              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 		              
+	elif [ $COMPILER ==  gcc-10 ]
+	then
+  	make -j"$PROCS" O=out \
+	                   CROSS_COMPILE=aarch64-linux-gnu- \ 
+	                   CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+	  
 	elif [ $COMPILER == dragon-tc ]
 	then
 	  make -j"$PROCS" O=out \
@@ -308,12 +314,6 @@ build_kernel() {
 	                OBJDUMP=llvm-objdump \
 	                STRIP=llvm-strip
 	                
-	elif [ $COMPILER == gcc-10 ]
-	then
-	  make -j"$PROCS" O=out \
-	                   CROSS_COMPILE=aarch64-linux-gnu- \ 
-	                   CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-	  
 	elif [ $COMPILER == gcc-4.9 ]
   then
   	make -j"$PROCS" O=out \
