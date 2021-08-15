@@ -31,7 +31,7 @@ ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
-COMPILER=gcc-10
+COMPILER=clang
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=N
@@ -310,7 +310,7 @@ build_kernel() {
 	                
 	elif [ $COMPILER == gcc-10 ]
 	then
-	  make -j$(nproc --all) O=out \
+	  make -j"$PROCS" O=out \
 	                   CROSS_COMPILE=aarch64-linux-gnu- \ 
 	                   CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 	  
