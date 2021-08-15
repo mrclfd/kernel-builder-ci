@@ -310,10 +310,10 @@ build_kernel() {
 	                
 	elif [ $COMPILER == gcc-10 ]
 	then
-	  make -j"$PROCS" O=out \
-  	              CROSS_COMPILE=aarch64-linux-gnu- \
-  	              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-  	              
+	  make -j$(nproc --all) O=out \
+	                   CROSS_COMPILE=aarch64-linux-gnu- \ 
+	                   CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+	  
 	elif [ $COMPILER == gcc-4.9 ]
   then
   	make -j"$PROCS" O=out \
