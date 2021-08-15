@@ -12,6 +12,8 @@ steps:
         from_secret: BOT_API_KEY
       GITHUB_TOKEN:
         from_secret: GH_TOKEN
+      GITHUB_EMAIL:
+        from_secret: GH_EMAIL
     image: fadlyas/kernel_dockerfile:latest
     name: Compilation
     trigger: 
