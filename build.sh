@@ -37,12 +37,6 @@ COMPILER=dragon-tc
 BRUTAL_KERNEL=Y
 COMPILE_ALL=Y
 OC=N
-  if [ $OC == Y ]
-  then
-    CLOCK="Overclock"
-  else
-    CLOCK="Stock"
-  fi
 STABLE=N
   if [ $STABLE == Y ]
   then
@@ -58,12 +52,6 @@ USE_EAS=N
     KERNEL_TYPE=HMP
   fi
 NLV=N
-  if [ $NLV == Y ]
-  then
-    VB_TYPE=NLV
-  else
-    VB_TYPE=LV
-  fi
   
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
@@ -231,6 +219,21 @@ up_log() {
 }
 
 build_kernel() {
+  
+  # String
+  if [ $OC == Y ]
+  then
+    CLOCK="Overclock"
+  else
+    CLOCK="Stock"
+  fi
+  if [ $NLV == Y ]
+  then
+    VB_TYPE=NLV
+  else
+    VB_TYPE=LV
+  fi
+  
   msg "// Reset Kernel Repo //"
   git reset --hard origin
 	msg "// Cleaning Sources //"
