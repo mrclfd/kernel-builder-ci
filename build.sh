@@ -237,7 +237,7 @@ build_kernel() {
   msg "// Reset Kernel Repo //"
   git reset --hard origin
 	msg "// Cleaning Sources //"
-	make clean && make mrproper
+	make clean && make mrproper && rm -rf out
 
 	if [ $PTTG == 1 ]
  	then
