@@ -398,12 +398,16 @@ then
   build_kernel
 else
   OC=N
-  NLV=NL
+  NLV=N
+  cd ~/kernel
   build_kernel
   OC=Y
+  cd ~/kernel
   build_kernel
   NLV=Y
+  cd ~/kernel
   build_kernel
   OC=N
+  cd ~/kernel
   build_kernel
 fi
