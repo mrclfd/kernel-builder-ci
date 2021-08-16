@@ -56,7 +56,7 @@ USE_EAS=N
   else
     KERNEL_TYPE=HMP
   fi
-NLV=Y
+NLV=N
   if [ $NLV == Y ]
   then
     VB_TYPE=NLV
