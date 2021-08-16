@@ -45,12 +45,6 @@ STABLE=N
     BUILD_TYPE=Test
   fi
 USE_EAS=N
-  if [ $USE_EAS == Y ]
-  then
-    KERNEL_TYPE=EAS
-  else
-    KERNEL_TYPE=HMP
-  fi
 NLV=N
   
 # Compiler Directory
@@ -232,6 +226,12 @@ build_kernel() {
     VB_TYPE=NLV
   else
     VB_TYPE=LV
+  fi
+  if [ $USE_EAS == Y ]
+  then
+    KERNEL_TYPE=EAS
+  else
+    KERNEL_TYPE=HMP
   fi
   
   msg "// Reset Kernel Repo //"
