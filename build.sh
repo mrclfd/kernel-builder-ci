@@ -353,10 +353,6 @@ build_kernel() {
 gen_zip() {
 	msg "// Zipping into a flashable zip //"
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
-	if [ $BUILD_DTBO == 1 ]
-	then
-		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
-	fi
 	cd AnyKernel3 || exit
 	
 	if [ $BRUTAL_KERNEL == Y ]
