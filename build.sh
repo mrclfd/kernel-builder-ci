@@ -35,7 +35,7 @@ COMPILER=dragon-tc
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
-COMPILE_ALL=N
+COMPILE_ALL=Y
 OC=N
   if [ $OC == Y ]
   then
