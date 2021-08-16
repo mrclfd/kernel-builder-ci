@@ -386,6 +386,8 @@ gen_zip() {
 	else
 	  curl -T $ZIP_FINAL.zip https://oshi.at
 	fi
+	rm -rf $ZIP_FINAL.zip
+	rm -rf Image.gz-dtb
 	cd ..
 }
 
