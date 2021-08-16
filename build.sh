@@ -35,6 +35,7 @@ COMPILER=dragon-tc
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
+COMPILE_ALL=N
 OC=N
   if [ $OC == Y ]
   then
@@ -230,12 +231,20 @@ up_log() {
 }
 
 build_kernel() {
+  msg "// Reset Kernel Repo //"
+  git reset --hard origin
 	msg "// Cleaning Sources //"
 	make clean && make mrproper
 
 	if [ $PTTG == 1 ]
  	then
-		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KERNEL_TYPE $CLOCK $VB_TYPE</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$PROG_LINK'>Click Here</a>"
+ 	  #if [ $COMPILE_ALL == Y ]
+ 	  #
+      KKT="$KERNEL_TYPE $CLOCK $VB_TYPE"
+		#else
+		 # KKT="All"
+	#	fi
+		tg_post_msg "<b>Docker OS : </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Kernel Type : </b><code>$KKT</code>%0A<b>Build Type : </b><code>$BUILD_TYPE</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'><code>$COMMIT_HEAD</code></a>%0A<b>Compiler Progress Link : </b><a href='$PROG_LINK'>Click Here</a>"
 	fi
   
   if [ $BRUTAL_KERNEL == Y ]
@@ -383,4 +392,18 @@ gen_zip() {
 
 clone
 exports
-build_kernel
+
+if [ $COMPILE_ALL != Y ]
+then
+  build_kernel
+else
+  OC=N
+  NLV=NL
+  build_kernel
+  OC=Y
+  build_kernel
+  NLV=Y
+  build_kernel
+  OC=N
+  build_kernel
+fi
