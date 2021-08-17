@@ -31,7 +31,7 @@ ZIPNAME="Brutal Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=brutal_defconfig
-COMPILER=dragon-tc
+COMPILER=clang
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
@@ -45,7 +45,7 @@ STABLE=N
     BUILD_TYPE=Test
   fi
 USE_EAS=N
-NLV=N
+NLV=Y
   
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
