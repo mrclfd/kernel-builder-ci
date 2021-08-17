@@ -35,7 +35,7 @@ COMPILER=dragon-tc
 
 # Brutal Kernel Only !!!
 BRUTAL_KERNEL=Y
-COMPILE_ALL=Y
+COMPILE_ALL=N
 OC=N
 STABLE=N
   if [ $STABLE == Y ]
