@@ -45,7 +45,7 @@ STABLE=N
     BUILD_TYPE=Test
   fi
 USE_EAS=N
-NLV=Y
+NLV=N
   
 # Compiler Directory
 GCC64_DIR=$KERNEL_DIR/gcc64
