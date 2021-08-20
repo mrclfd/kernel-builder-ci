@@ -234,8 +234,11 @@ build_kernel() {
     KERNEL_TYPE=HMP
   fi
   
-  msg "// Reset Kernel Repo //"
-  git reset --hard origin
+  if [ $COMPILE_ALL == Y ]
+  then 
+    msg "// Reset Kernel Repo //"
+    git reset --hard origin
+  fi
 	msg "// Cleaning Sources //"
 	make clean && make mrproper && rm -rf out
 
