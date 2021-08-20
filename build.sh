@@ -27,14 +27,14 @@ err() {
 }
 
 KERNEL_DIR="$(pwd)"
-ZIPNAME="Brutal Kernel"
+ZIPNAME="Perf+ Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
-DEFCONFIG=brutal_defconfig
-COMPILER=dragon-tc
+DEFCONFIG=X00TD_defconfig
+COMPILER=clang
 
 # Brutal Kernel Only !!!
-BRUTAL_KERNEL=Y
+BRUTAL_KERNEL=N
 COMPILE_ALL=N
 OC=N
 STABLE=N
