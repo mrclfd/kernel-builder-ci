@@ -155,6 +155,8 @@ exports() {
 	then
 	  KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
 	  PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:${PATH}"
+	  export LD=ld.lld
+		export LD_LIBRARY_PATH="$CLANG_DIR/lib64:$LD_LIBRARY_PATH"
 	elif [ $COMPILER == proton-clang ]
 	then
   	KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
@@ -289,7 +291,12 @@ build_kernel() {
 	                CC=clang \
 	                CLANG_TRIPLE=aarch64-linux-gnu- \
 	                CROSS_COMPILE=aarch64-linux-android- \
-	                CROSS_COMPILE_ARM32=arm-linux-androideabi-
+	                CROSS_COMPILE_ARM32=arm-linux-androideabi \
+	                AR=llvm-ar \
+	                NM=llvm-nm \
+	                OBJCOPY=llvm-objcopy \
+	                OBJDUMP=llvm-objdump \
+	                STRIP=llvm-strip
 	
 	elif [ $COMPILER == proton-clang ]
 	then
