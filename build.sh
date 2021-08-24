@@ -27,7 +27,7 @@ err() {
 }
 
 KERNEL_DIR="$(pwd)"
-ZIPNAME="Perf+ Kernel"
+ZIPNAME="Brutal-PureCAF Kernel"
 MODEL="Asus Zenfone Max Pro M1"
 DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
