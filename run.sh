@@ -1,4 +1,4 @@
-sudo apt-get install xz-utils
+apt-get install xz-utils
 if [ -n "$DRONE" ]
 then
   usermame=$DRONE_REPO_OWNER
