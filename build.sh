@@ -209,8 +209,7 @@ tg_post_file() {
 }
 
 up_log() {
-  make > build.log 2>&1
-  log=$(cat build.log)
+  log=$(cat error.log)
   tg_post_msg "<b>Log :</b>%0A<code>$log</code>"
 }
 
@@ -296,7 +295,7 @@ build_kernel() {
 	                NM=llvm-nm \
 	                OBJCOPY=llvm-objcopy \
 	                OBJDUMP=llvm-objdump \
-	                STRIP=llvm-strip
+	                STRIP=llvm-strip 2>&1 | tee error.log
 	
 	elif [ $COMPILER == proton-clang ]
 	then
@@ -308,7 +307,7 @@ build_kernel() {
 	                NM=llvm-nm \
 	                OBJCOPY=llvm-objcopy \
 	                OBJDUMP=llvm-objdump \
-	                STRIP=llvm-strip
+	                STRIP=llvm-strip 2>&1 | tee error.log
 	
 	elif [ $COMPILER == nusantara-clang ]
 	then
@@ -316,13 +315,13 @@ build_kernel() {
 		              CC=clang \
 		              CLANG_TRIPLE=aarch64-linux-gnu- \
 		              CROSS_COMPILE=aarch64-linux-gnu- \
-		              CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+		              CROSS_COMPILE_ARM32=arm-linux-gnueabi- 2>&1 | tee error.log
 		              
 	elif [ $COMPILER ==  gcc-10 ]
 	then
   	make -j"$PROCS" O=out \
   	                CROSS_COMPILE=aarch64-linux-gnu- \ 
-  	                CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+  	                CROSS_COMPILE_ARM32=arm-linux-gnueabi- 2>&1 | tee error.log
 	  
 	elif [ $COMPILER == dragon-tc ]
 	then
@@ -334,13 +333,13 @@ build_kernel() {
 	                NM=llvm-nm \
 	                OBJCOPY=llvm-objcopy \
 	                OBJDUMP=llvm-objdump \
-	                STRIP=llvm-strip
+	                STRIP=llvm-strip 2>&1 | tee error.log
 	                
 	elif [ $COMPILER == gcc-4.9 ]
   then
   	make -j"$PROCS" O=out \
   	              CROSS_COMPILE=aarch64-linux-android- \
-  	              CROSS_COMPILE_ARM32=arm-linux-androideabi-
+  	              CROSS_COMPILE_ARM32=arm-linux-androideabi- 2>&1 | tee error.log
   fi
 
 	BUILD_END=$(date +"%s")
